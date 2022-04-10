@@ -121,7 +121,6 @@ ExceptionHandler(ExceptionType which)
        case SC_PrintInt:
 			DEBUG(dbgSys,"Print call...\n");
 			SysPrintInt(/* int op1 */kernel->machine->ReadRegister(4));
-			//cout << endl;
 			{
 			/* set previous programm counter (debugging only)*/
 	  		kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));

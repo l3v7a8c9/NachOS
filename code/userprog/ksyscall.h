@@ -36,8 +36,6 @@ int SysCreate(char *filename)
 
 void SysPrintInt(int n)
 {
-	//kernel->synchConsoleOut->PutChar(char(n+'0'));
-	//kernel->synchConsoleOut->PutChar('\n');
 	int m = 0;
  	int flag = 0;
  	char temp[64];
@@ -98,19 +96,21 @@ int SysWrite(char *buffer, int size, OpenFileId id){
 	int result = openfile->Write(buf,size);
 
 	kernel->machine->WriteRegister(2,result);
-	//openfile->~OpenFile();
 	return result;
 }
 
 int SysRead(char *buf,int size,OpenFileId id)
 {
-	//cout << "szie:" << size << " id:" << id << endl;
 	OpenFile* openfile = new OpenFile (id);
-	char temp[size];
 	int readnum = 0;
+	char temp[size];
 	readnum = openfile->Read(temp,size);
-
-	//delete openfile;
+	
+	for (int i=0;i<26;++i){
+		if (!kernel->machine->WriteMem((int)buf+i,1,temp[i])){
+			break;
+		}
+	}
 	kernel->machine->WriteRegister(2,readnum);
         return readnum;
 }
